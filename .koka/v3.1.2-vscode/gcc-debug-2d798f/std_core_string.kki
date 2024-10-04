@@ -1,0 +1,226 @@
+// Standard `:string` functions.
+module interface std/core/string
+ 
+//------------------------------
+//#kki: import declarations
+ 
+import std/core/types = std/core/types = "";
+import std/core/hnd = std/core/hnd = "";
+import std/core/int = std/core/int = "";
+import std/core/order = std/core/order = "";
+import std/core/vector = std/core/vector = "";
+ 
+//------------------------------
+//#kki: external imports
+ 
+ 
+//------------------------------
+//#kki: fixity declarations
+ 
+ 
+//------------------------------
+//#kki: local imported aliases
+ 
+ 
+//------------------------------
+//#kki: type declarations
+ 
+ 
+//------------------------------
+//#kki: declarations
+ 
+// Convert a character to a string
+pub  fun char/string[24,12,24,22] : (c : std/core/types/char) -> std/core/types/string;
+// Convert a vector of characters to a string.
+pub  fun vector/string[30,12,30,24] : ((std/core/types/vector :: V -> V)<std/core/types/char>) -> std/core/types/string;
+// Convert a string to a vector of characters.
+pub  fun vector[36,12,36,17] : (s : std/core/types/string) -> (std/core/types/vector :: V -> V)<std/core/types/char>;
+fip fun string-cmp[54,12,54,21] : (^ x : std/core/types/string, ^ y : std/core/types/string) -> std/core/types/int;
+// Compare two strings.
+// Uses the character codes directly for comparison
+pub fip fun cmp[61,13,61,15] : (^ x : std/core/types/string, ^ y : std/core/types/string) -> std/core/types/order;
+pub fip fun (<)[70,13,70,15] : (^ x : std/core/types/string, ^ y : std/core/types/string) -> std/core/types/bool;
+pub fip fun (<=)[68,13,68,16] : (^ x : std/core/types/string, ^ y : std/core/types/string) -> std/core/types/bool;
+pub fip fun order2[64,13,64,18] : (x : std/core/types/string, y : std/core/types/string) -> (std/core/types/string, std/core/types/string);
+pub fip fun (>)[69,13,69,15] : (^ x : std/core/types/string, ^ y : std/core/types/string) -> std/core/types/bool;
+pub fip fun (>=)[67,13,67,16] : (^ x : std/core/types/string, ^ y : std/core/types/string) -> std/core/types/bool;
+// O(n). Return the number of characters in a string.
+pub  fun count[77,12,77,16] : (s : std/core/types/string) -> std/core/types/int;
+ fun repeatz[102,8,102,14] : (s : std/core/types/string, n : std/core/types/ssize_t) -> std/core/types/string;
+// Repeat a string `n` times
+pub  fun repeat[108,9,108,14] : (s : std/core/types/string, ^ n : std/core/types/int) -> std/core/types/string;
+// Convert a `:maybe` string to a string using the empty sting for `Nothing`
+pub  fun maybe/string[112,9,112,20] : (ms : (std/core/types/maybe :: V -> V)<std/core/types/string>) -> std/core/types/string;
+// Is a string empty?
+pub  fun is-empty[118,9,118,16] : (s : std/core/types/string) -> std/core/types/bool;
+// Choose a non-empty string
+pub  fun (||)[73,9,73,12] : (x : std/core/types/string, y : std/core/types/string) -> std/core/types/string;
+// Is a string not empty?
+pub  fun is-notempty[122,9,122,19] : (s : std/core/types/string) -> std/core/types/bool;
+// Transform a string to a maybe type, using `Nothing` for an empty string
+pub  fun maybe[126,9,126,13] : (s : std/core/types/string) -> (std/core/types/maybe :: V -> V)<std/core/types/string>;
+// Convert a string to upper-case
+pub  fun to-upper[145,12,145,19] : (s : std/core/types/string) -> std/core/types/string;
+// Convert a string to lower-case
+pub  fun to-lower[151,12,151,19] : (s : std/core/types/string) -> std/core/types/string;
+// Convert a string to a list of characters
+pub  fun list[213,12,213,15] : (s : std/core/types/string) -> (std/core/types/list :: V -> V)<std/core/types/char>;
+// Convert a list of characters to a string
+pub  fun listchar/string[219,12,219,26] : (cs : (std/core/types/list :: V -> V)<std/core/types/char>) -> std/core/types/string;
+// Right-align a string to width `width`  using `fill`  (default is a space) to fill from the left.
+pub  fun pad-left[158,9,158,16] : (s : std/core/types/string, ^ width : std/core/types/int, fill : (std/core/types/@optional :: V -> V)<std/core/types/char>) -> std/core/types/string;
+// Left-align a string to width `width`  using `fill`  (default is a space) to fill on the right.
+pub  fun pad-right[166,9,166,17] : (s : std/core/types/string, ^ width : std/core/types/int, fill : (std/core/types/@optional :: V -> V)<std/core/types/char>) -> std/core/types/string;
+// Trim whitespace on the left and right side of a string
+pub  fun trim[174,9,174,12] : (s : std/core/types/string) -> std/core/types/string;
+// Split a string into parts that were delimited by `sep`. The delimeters are not included in the results.
+// For example: `split("1,,2",",") == ["1","","2"]`
+pub  fun split[203,9,203,13] : (s : std/core/types/string, sep : std/core/types/string) -> (std/core/types/list :: V -> V)<std/core/types/string>;
+// Split a string into at most `n` parts that were delimited by a string `sep`. The delimeters are not included in the results (except for possibly the final part).
+// For example: `split("1,2,3",",",2) == ["1","2,3"]`
+pub  fun splitn/split[208,9,208,20] : (s : std/core/types/string, sep : std/core/types/string, ^ n : std/core/types/int) -> (std/core/types/list :: V -> V)<std/core/types/string>;
+ 
+//------------------------------
+//#kki: external declarations
+ 
+// Are two strings equal?
+// Uses exact equality between character codes.
+pub  extern (==)[43,19,43,22] : (std/core/types/string, std/core/types/string) -> std/core/types/bool {
+  c inline "kk_string_is_eq(#1,#2,kk_context())";
+  cs inline "(#1 == #2)";
+  js inline "(#1 === #2)";
+};
+// Are two strings not equal?
+pub  extern (!=)[49,19,49,22] : (std/core/types/string, std/core/types/string) -> std/core/types/bool {
+  c inline "kk_string_is_neq(#1,#2,kk_context())";
+  inline "(#1 != #2)";
+  js inline "(#1 !== #2)";
+};
+// Does string `s` contain the string `sub`?
+pub  extern contains[84,19,84,26] : (s : std/core/types/string, sub : std/core/types/string) -> std/core/types/bool {
+  c inline "kk_string_contains(#1,#2,kk_context())";
+  cs inline "((#1).Contains(#2))";
+  js inline "((#1).indexOf(#2) >= 0)";
+};
+// Concatenate a vector of strings
+pub  extern vector/join[90,19,90,29] : (v : (std/core/types/vector :: V -> V)<std/core/types/string>) -> std/core/types/string {
+  c inline "kk_string_join(#1,kk_context())";
+  cs inline "String.Concat(#1)";
+  js inline "((#1).join(\x27\x27))";
+};
+// Concatenate a vector of strings with a separator `sep`
+pub  extern vectorsep/join[96,19,96,32] : (v : (std/core/types/vector :: V -> V)<std/core/types/string>, sep : std/core/types/string) -> std/core/types/string {
+  c inline "kk_string_join_with(#1,#2,kk_context())";
+  cs inline "Primitive.Concat(#1,#2)";
+  js inline "((#1).join(#2))";
+};
+// Replace every occurrence of `pattern` to `repl` in a string.
+pub  extern replace-all[131,19,131,29] : (s : std/core/types/string, pattern : std/core/types/string, repl : std/core/types/string) -> std/core/types/string {
+  c inline "kk_string_replace_all(#1,#2,#3,kk_context())";
+  cs inline "(#1).Replace(#2,#3)";
+  js inline "(#1).replace(new RegExp((#2).replace(/[\x5C\x5C\x5C$\x5C^*+\x5C-{}?().]/g,\x27\x5C\x5C$&\x27),\x27g\x27),#3)";
+};
+// Count occurrences of `pattern` in a string.
+pub  extern stringpat/count[137,19,137,33] : (s : std/core/types/string, pattern : std/core/types/string) -> std/core/types/int {
+  c inline "kk_string_count_pattern(#1,#2,kk_context())";
+  cs inline "Primitive.Count(#1,#2)";
+  js inline "((#2) ? ((#1).match(new RegExp((#2).replace(/[\x5C\x5C\x5C$\x5C^*+\x5C-{}?().]/g,\x27\x5C\x5C$&\x27),\x27g\x27))||[]).length : 0)";
+};
+// Trim the starting white space of a string
+pub  extern trim-left[178,19,178,27] : (s : std/core/types/string) -> std/core/types/string {
+  c inline "kk_string_trim_left(#1,kk_context())";
+  cs inline "(#1).TrimStart()";
+  js inline "((#1).replace(/^\x5Cs\x5Cs*/,\x27\x27))";
+};
+// Trim the ending white space of a string.
+pub  extern trim-right[184,19,184,28] : (s : std/core/types/string) -> std/core/types/string {
+  c inline "kk_string_trim_right(#1,kk_context())";
+  cs inline "(#1).TrimEnd()";
+  js inline "((#1).replace(/\x5Cs+$/,\x27\x27))";
+};
+ extern splitv[191,15,191,20] : (s : std/core/types/string, sep : std/core/types/string) -> (std/core/types/vector :: V -> V)<std/core/types/string> {
+  c inline "kk_string_splitv(#1,#2,kk_context())";
+  cs inline "(#1.Split(new String[]{#2}, StringSplitOptions.None))";
+  js inline "((#1).split(#2))";
+};
+ extern splitvn[196,15,196,21] : (s : std/core/types/string, sep : std/core/types/string, n : std/core/types/ssize_t) -> (std/core/types/vector :: V -> V)<std/core/types/string> {
+  c inline "kk_string_splitv_atmost(#1,#2,#3,kk_context())";
+  cs inline "#1.Split(new String[]{#2},#3, StringSplitOptions.None)";
+  js inline "(#1).split(#2, #3)";
+};
+ 
+//------------------------------
+//#kki: inline definitions
+ 
+//.inline-section
+borrow "^^" fip fun (<) // inline size: 2
+  = fn(x: std/core/types/string, y: std/core/types/string){
+    std/core/order/(==)((std/core/string/cmp(x, y)), std/core/types/Lt);
+  };
+borrow "^^" fip fun (<=) // inline size: 2
+  = fn(x: std/core/types/string, y: std/core/types/string){
+    std/core/order/(<)((std/core/string/cmp(x, y)), std/core/types/Gt);
+  };
+borrow "^^" fip fun (>) // inline size: 2
+  = fn(x: std/core/types/string, y: std/core/types/string){
+    std/core/order/(==)((std/core/string/cmp(x, y)), std/core/types/Gt);
+  };
+borrow "^^" fip fun (>=) // inline size: 2
+  = fn(x: std/core/types/string, y: std/core/types/string){
+    std/core/order/(>)((std/core/string/cmp(x, y)), std/core/types/Lt);
+  };
+borrow "_^"  fun repeat // inline size: 2
+  = fn(s: std/core/types/string, n: std/core/types/int){
+    std/core/string/repeatz(s, (std/core/int/ssize_t(n)));
+  };
+ fun maybe/string // inline size: 1
+  = fn(ms: (std/core/types/maybe :: V -> V)<std/core/types/string>){
+    match (ms) {
+      ((std/core/types/Nothing() : (std/core/types/maybe :: V -> V)<std/core/types/string> ) as @pat: ((std/core/types/maybe :: V -> V)<std/core/types/string>))
+         -> "";
+      ((@skip std/core/types/Just((s: std/core/types/string) : std/core/types/string) : (std/core/types/maybe :: V -> V)<std/core/types/string> ) as @pat@0: ((std/core/types/maybe :: V -> V)<std/core/types/string>))
+         -> s;
+    };
+  };
+ fun is-empty // inline size: 1
+  = fn(s: std/core/types/string){
+    std/core/string/(==)(s, "");
+  };
+ fun (||) // inline size: 2
+  = fn(x: std/core/types/string, y: std/core/types/string){
+    match ((std/core/string/(==)(x, ""))) {
+      ((std/core/types/True() : std/core/types/bool ) as @pat: std/core/types/bool)
+         -> y;
+      ((@skip std/core/types/False() : std/core/types/bool ) as @pat@0: std/core/types/bool)
+         -> x;
+    };
+  };
+ fun is-notempty // inline size: 1
+  = fn(s: std/core/types/string){
+    std/core/string/(!=)(s, "");
+  };
+ fun maybe // inline size: 3
+  = fn(s: std/core/types/string){
+    match ((std/core/string/(==)(s, ""))) {
+      ((std/core/types/True() : std/core/types/bool ) as @pat: std/core/types/bool)
+         -> std/core/types/Nothing<std/core/types/string>;
+      ((@skip std/core/types/False() : std/core/types/bool ) as @pat@0: std/core/types/bool)
+         -> std/core/types/Just<std/core/types/string>(s);
+    };
+  };
+ fun trim // inline size: 2
+  = fn(s: std/core/types/string){
+    std/core/string/trim-right((std/core/string/trim-left(s)));
+  };
+ fun split // inline size: 2
+  = fn(s: std/core/types/string, sep: std/core/types/string){
+    val v@10013[1,0,1,0] : (std/core/types/vector :: V -> V)<std/core/types/string>
+          = std/core/string/splitv(s, sep);
+    std/core/vector/vlist<std/core/types/string>(v@10013, (std/core/types/@None<(std/core/types/list :: V -> V)<std/core/types/string>>));
+  };
+borrow "__^"  fun splitn/split // inline size: 3
+  = fn(s: std/core/types/string, sep: std/core/types/string, n: std/core/types/int){
+    val v@10014[1,0,1,0] : (std/core/types/vector :: V -> V)<std/core/types/string>
+          = std/core/string/splitvn(s, sep, (std/core/int/ssize_t(n)));
+    std/core/vector/vlist<std/core/types/string>(v@10014, (std/core/types/@None<(std/core/types/list :: V -> V)<std/core/types/string>>));
+  };
